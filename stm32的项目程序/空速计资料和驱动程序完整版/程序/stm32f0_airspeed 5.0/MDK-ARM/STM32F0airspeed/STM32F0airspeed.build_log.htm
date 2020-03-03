@@ -1,0 +1,75 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.14.0.0
+Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: liu LiuFan, liu, LIC=NHY12-9LIHW-JL9CC-78F55-L52IR-Y2TX5
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.14.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.05 update 1 (build 106)
+Assembler:       Armasm.exe V5.05 update 1 (build 106)
+Linker/Locator:  ArmLink.exe V5.05 update 1 (build 106)
+Library Manager: ArmAr.exe V5.05 update 1 (build 106)
+Hex Converter:   FromElf.exe V5.05 update 1 (build 106)
+CPU DLL:         SARMCM3.DLL V5.14.0.0
+Dialog DLL:      DARMCM1.DLL V1.12.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.14.0_KEIL
+Dialog DLL:      TARMCM1.DLL V1.9.0.0
+ 
+<h2>Project:</h2>
+E:\programme\stm32f0_airspeed 5.0\MDK-ARM\STM32F0airspeed.uvprojx
+Project File Date:  12/17/2018
+
+<h2>Output:</h2>
+Build target 'STM32F0airspeed'
+compiling can.c...
+compiling main.c...
+../Src/main.c(144): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "u8 *"
+                                                CAN_Send_Msg(Send_Buf,8);                                                                                       //通过can总线发送数据字符串 单位m/s
+../Src/main.c: 1 warning, 0 errors
+compiling i2c_ee.c...
+compiling ms4525.c...
+..\HARDWARE\MS4525\ms4525.c(254): warning:  #192-D: unrecognized character escape sequence
+                        *(s+pn)='\.';
+..\HARDWARE\MS4525\ms4525.c(261): warning:  #192-D: unrecognized character escape sequence
+                         *(s+pn)='\-';
+..\HARDWARE\MS4525\ms4525.c(273): warning:  #192-D: unrecognized character escape sequence
+                                *(s+pn)='\.';
+..\HARDWARE\MS4525\ms4525.c(290): warning:  #192-D: unrecognized character escape sequence
+                        *(s+pn)='\.';
+..\HARDWARE\MS4525\ms4525.c(302): warning:  #192-D: unrecognized character escape sequence
+                                *(s+pn)='\.';
+..\HARDWARE\MS4525\ms4525.c(307): warning:  #192-D: unrecognized character escape sequence
+                         *(s+pn)='\-';
+..\HARDWARE\MS4525\ms4525.c(231): warning:  #177-D: variable "flag_z" was declared but never referenced
+        int flag_z=false;
+..\HARDWARE\MS4525\ms4525.c: 7 warnings, 0 errors
+linking...
+Program Size: Code=12396 RO-data=248 RW-data=20 ZI-data=1308  
+FromELF: creating hex file...
+"STM32F0airspeed\STM32F0airspeed.axf" - 0 Error(s), 8 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.2.0.pack
+                ARM::CMSIS:CORE:3.40.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.40.0
+
+<h2>Collection of Component include folders:</h2>
+  E:\programme\stm32f0_airspeed 5.0\MDK-ARM\RTE
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\2.0.0
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.40.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+</pre>
+</body>
+</html>

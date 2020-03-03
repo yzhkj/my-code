@@ -1,0 +1,58 @@
+Configuration	STM32F1TESTYUYIN
+STM32CubeMX 	4.23.0
+Date	01/01/2019
+MCU	STM32F103C8Tx
+
+
+
+PERIPHERALS	MODES	FUNCTIONS	PINS
+RCC	Crystal/Ceramic Resonator	RCC_OSC_IN	PD0-OSC_IN
+RCC	Crystal/Ceramic Resonator	RCC_OSC_OUT	PD1-OSC_OUT
+SPI1	Full-Duplex Master	SPI1_MISO	PA6
+SPI1	Full-Duplex Master	SPI1_MOSI	PA7
+SPI1	Full-Duplex Master	SPI1_SCK	PA5
+SYS	No Debug	SYS_VS_ND	VP_SYS_VS_ND
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+USART1	Asynchronous	USART1_RX	PA10
+USART1	Asynchronous	USART1_TX	PA9
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+5	PD0-OSC_IN	RCC_OSC_IN	
+6	PD1-OSC_OUT	RCC_OSC_OUT	
+14	PA4*	SPI1_NSS	SPI1_CS
+15	PA5	SPI1_SCK	SPI1_CLK
+16	PA6	SPI1_MISO	SPI1_MISO
+17	PA7	SPI1_MOSI	SPI1_MOSI
+25	PB12	GPIO_Output	LED
+30	PA9	USART1_TX	UART1_TX
+31	PA10	USART1_RX	UART1_RX
+
+
+
+SOFTWARE PROJECT
+
+Project Settings : 
+Project Name : STM32F1TESTYUYIN
+Project Folder : E:\programme\STM32F1_TEST1\STM32F1TESTYUYIN
+Toolchain / IDE : MDK-ARM V5
+Firmware Package Name and Version : STM32Cube FW_F1 V1.6.1
+
+
+Code Generation Settings : 
+STM32Cube Firmware Library Package : Copy all used libraries into the project folder
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : No
+Backup previously generated files when re-generating : No
+Delete previously generated files when not re-generated : Yes
+Set all free pins as analog (to optimize the power consumption) : No
+
+
+Toolchains Settings : 
+Compiler Optimizations : Balanced Size/Speed
+
+
+
+
+
+

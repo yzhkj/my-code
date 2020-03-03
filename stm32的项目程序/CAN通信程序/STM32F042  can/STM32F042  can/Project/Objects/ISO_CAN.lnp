@@ -1,0 +1,24 @@
+--cpu Cortex-M0
+".\objects\startup_stm32f042.o"
+".\objects\system_stm32f0xx.o"
+".\objects\stm32f0xx_usart.o"
+".\objects\stm32f0xx_can.o"
+".\objects\stm32f0xx_gpio.o"
+".\objects\stm32f0xx_rcc.o"
+".\objects\stm32f0xx_misc.o"
+".\objects\stm32f0xx_dma.o"
+".\objects\stm32f0xx_tim.o"
+".\objects\stm32f0xx_adc.o"
+".\objects\iso_dma.o"
+".\objects\can.o"
+".\objects\key.o"
+".\objects\led.o"
+".\objects\main.o"
+".\objects\delay.o"
+".\objects\timer.o"
+".\objects\adc.o"
+".\objects\iso_usart1.o"
+--library_type=microlib --strict --scatter ".\Objects\ISO_CAN.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\ISO_CAN.map" -o .\Objects\ISO_CAN.axf

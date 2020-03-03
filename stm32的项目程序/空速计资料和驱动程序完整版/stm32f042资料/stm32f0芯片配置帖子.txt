@@ -1,0 +1,7 @@
+参考网址：
+管脚复用问题
+http://www.51hei.com/bbs/dpj-40985-1.html
+
+
+STM32F042 基于CubeMX HAL库CAN的配置
+https://blog.csdn.net/zennaiheqiao/article/details/78279285

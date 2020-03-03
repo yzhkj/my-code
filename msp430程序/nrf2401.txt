@@ -1,0 +1,285 @@
+#include "Msp430X14X.h"
+
+#define CE          BIT0
+#define CS          BIT1
+#define PWR_UP      BIT3
+#define ADDR_INDEX  8
+#define ADDR_COUNT  4
+void CE_HI(void);
+void CE_LO(void);
+void CS_HI(void);
+void CS_LO(void);
+void PWR_UP_HI(void);
+void PWR_UP_LO(void);
+void Init_CLK(void);
+void Port_Init(void);
+void Init_SPI (void);
+void Delay_us(unsigned long nValue);
+void Delay_ms(unsigned long nValue);
+void Init_RF2401(void);
+char ReceivePacket(void);
+void TransmitPacket(unsigned char nVal);
+
+//定义串口操作变量
+unsigned char UART0_TX_BUF[25];     // 串口 0 的发送缓冲区
+int nTX0_Len;
+char nTX0_Flag;
+int nSend_TX0;
+int nDR;
+
+
+unsigned char rxConfig[15] = {
+    0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x87, 0x65, 0x43, 0x21, 0x83, 0x6c, 0x05
+};
+unsigned char txConfig[15] = {
+    0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x87, 0x65, 0x43, 0x21, 0x83, 0x6c, 0x04
+};
+void main(void)
+{
+char n;
+    WDTCTL = WDTPW + WDTHOLD;   // 关闭看门狗
+
+
+    _DINT();            // 关闭中断
+
+    Init_CLK();
+    Port_Init();
+    Init_SPI();
+
+    _EINT();            // 打开中断
+
+    Init_RF2401();
+    while(1)
+    {
+        TransmitPacket(3);
+        Delay_ms(3);
+        n = ReceivePacket();
+    }
+}
+void Port_Init(void)
+{
+    P1DIR = 0;
+    //设置CE为输出管脚
+    P1DIR |= BIT0;   
+    //设置CS为输出管脚
+    P1DIR |= BIT1;
+    //设置PWR_UP为输出管脚
+    P1DIR |= BIT3;
+    //将中断寄存器清零
+    P1IE = 0;
+    P1IES = 0;
+    P1IFG = 0;
+    //管脚 P1.2 使能中断
+    P1IE |= BIT2;
+    //对应的管脚由低到高电平跳变使相应的标志置位
+    P1IES &= ~(BIT2);
+
+    //将P3口所有的管脚设置为一般I/O口
+    P3SEL = 0;
+    //P3.1 P3.2 P3.3被分配为SPI口
+    P3SEL = BIT3 + BIT2 + BIT1;
+    //P3.3作为输出管脚
+    P3DIR |= BIT3;
+    //P3.1作为输出管脚
+    P3DIR |= BIT1;
+    return;
+}
+
+void Init_SPI (void)
+{
+    //SPI0模块允许     
+    ME1 |= USPIE0; 
+    //将寄存器的内容清零
+    U0CTL = 0X00;   
+    //数据为8比特，选择SPI模式，单片机为主机模式
+    U0CTL |= CHAR + SYNC + MM;
+
+    //将寄存器的内容清零
+    U0TCTL = 0X00;  
+    // 时钟源为SMCLK，选择3线模式
+    U0TCTL = CKPH + SSEL1 + SSEL0 + STC; 
+
+    //传输时钟为SMCLK / 800
+    UBR0_0 = 0X20;  
+    UBR1_0 = 0X03;
+    //调整寄存器,没有调整
+    UMCTL_0 = 0X00;     //The modulation control register is not used for SPI mode and should be set to 000h.
+
+    //发送中断允许
+    IE1 |= UTXIE0; 
+}
+void CE_HI(void)   //CE高电平
+{
+    P1OUT |= BIT0;
+    return;
+}
+void CE_LO(void)  //ce低
+{
+    P1OUT &= ~(BIT0);
+    return;
+}
+void CS_HI(void)
+{
+    P1OUT |= BIT1;
+    return;
+}
+void CS_LO(void)
+{
+    P1OUT &= ~(BIT1);
+    return;
+}
+void PWR_UP_HI(void)
+{
+    P1OUT |= BIT3;
+    return;
+}
+void PWR_UP_LO(void)
+{
+    P1OUT &= ~(BIT3);
+    return;
+}
+void Init_CLK(void)
+{
+    unsigned int i;
+    BCSCTL1 = 0X00;         //将Basic Clock System Control Register 1寄存器的内容清零
+                    //XT2震荡器开启
+                    //LFTX1工作在低频模式
+                    //ACLK的分频因子为1
+
+    do 
+    {
+    IFG1 &= ~OFIFG;                       // 清除OSCFault标志
+    for (i = 0x20; i > 0; i--);                
+    }
+    while ((IFG1 & OFIFG) == OFIFG);      // 如果OSCFault =1   
+
+    BCSCTL2 = 0X00;         //将寄存器的内容清零
+    BCSCTL2 += SELM1;       //MCLK的时钟源为TX2CLK，分频因子为1
+    BCSCTL2 += SELS;        //SMCLK的时钟源为TX2CLK，分频因子为1
+}
+
+interrupt [UART0TX_VECTOR] void UART0_TX_ISR(void)
+{
+    if(nTX0_Len != 0)
+    {
+        // 表示缓冲区里的数据没有发送完
+        nTX0_Flag = 0;              
+
+        TXBUF0 = UART0_TX_BUF[nSend_TX0];
+        nSend_TX0 += 1;
+
+        if(nSend_TX0 >= nTX0_Len)
+        {
+            nSend_TX0 = 0;
+            nTX0_Len = 0;
+            nTX0_Flag = 1;
+        }
+    }
+}
+interrupt [PORT1_VECTOR] void DR_ISR(void)
+{
+    if(P1IFG & BIT2)
+    {
+        nDR = 1;
+        // 清除中断标志位
+        P1IFG &= ~(BIT2);  
+    }
+}
+void Delay_ms(unsigned long nValue)//毫秒为单位，8MHz为主时钟
+{
+    unsigned long nCount;
+    int i;
+    unsigned long j;
+    nCount = 2667;
+    for(i = nValue;i > 0;i--)
+    {
+        for(j = nCount;j > 0;j--);
+    }
+    return;
+}
+void Delay_us(unsigned long nValue)//微秒为单位，8MHz为主时钟
+{
+    int nCount;
+    int i;
+    int j;
+    nCount = 3;
+    for(i = nValue;i > 0;i--)
+    {
+        for(j = nCount;j > 0;j--);
+    }
+    return;
+}
+void Init_RF2401(void)
+{
+    int i;
+    nDR = 0;
+    //激活nRF2401
+    PWR_UP_HI();
+    //延迟
+    Delay_ms(4);
+    CS_HI();
+    Delay_us(100);
+    CE_LO();
+    Delay_us(100);   //进入配置模式
+    //发送配置信息
+    for(i = 0;i < 15;i++)
+    {
+        UART0_TX_BUF[i] = rxConfig[i];
+    }
+    nTX0_Len = 15;
+    // 设置中断标志，进入发送中断程序
+    IFG1 |= UTXIFG0;        
+}
+void TransmitPacket(unsigned char nVal)
+{
+    unsigned char i;
+
+    CS_HI();
+    Delay_us(10);
+    TXBUF0 = 0x05;
+    CS_LO();
+    Delay_us(300);
+
+    CE_HI();
+    Delay_us(10);
+    for(i = 0;i < ADDR_COUNT;i++)
+    {
+        UART0_TX_BUF[i] = rxConfig[ADDR_INDEX + i];
+    }
+    UART0_TX_BUF[i] = nVal;
+    nTX0_Len = ADDR_COUNT + 1;
+    // 设置中断标志，进入发送中断程序
+    IFG1 |= UTXIFG0;
+    CE_LO();
+    //延迟
+    Delay_us(300);
+}
+char ReceivePacket(void)
+{
+    char nVal;
+
+    CS_HI();
+    Delay_us(10);
+    TXBUF0 = 0x04;
+    CS_LO();
+    Delay_us(300);
+
+    CE_HI();
+    while(1)
+    {
+        if(nDR == 1)
+        {
+            break;
+        }
+
+    }
+    TXBUF0 = 0x0;
+    while ((IFG1 & UTXIFG0) == 0) ;
+    nVal = RXBUF0;
+    CE_LO();
+    //延迟
+    Delay_us(300);
+    return nVal;
+}

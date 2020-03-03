@@ -1,0 +1,197 @@
+
+选择滤波函数
+
+int filter(kalman1_state *state,int rec_value)
+{
+	  static u8 Start_Limit_Flg=0;
+	
+	  int temp_value=0;
+	  if(rec_value<Start_Limit_Max && rec_value>Start_Limit_Min)
+	  {
+		  Start_Limit_Flg=1;
+	  }
+	  if(Start_Limit_Flg==1)
+	  {
+		temp_value=LimitRange_Filter(rec_value);
+	  }
+	  else
+	  {
+		  temp_value=rec_value;
+	  }
+//	  temp_value=rec_value;
+	  temp_value=kalman1_filter(state,temp_value);
+	  return temp_value;
+}
+
+//变限速处理函数
+
+#define SOURCE_MAX 3000
+#define SOURCE_MIN 0
+
+
+#define RESOLVE_MAX  800 
+#define RESOLVE_MIN  300
+
+int change_range_value(int rec)
+{
+	int result=0;
+	if(rec<SOURCE_MAX && rec>SOURCE_MIN)
+	{
+//		result=SOURCE_MAX-(rec-RESOLVE_MIN)*(SOURCE_MAX-SOURCE_MIN)/(RESOLVE_MAX-SOURCE_MIN);
+		result=RESOLVE_MAX-(rec-SOURCE_MIN)*(RESOLVE_MAX-RESOLVE_MIN)/(SOURCE_MAX-SOURCE_MIN);
+	}
+	else if(rec>=SOURCE_MAX  )
+	{
+		result=RESOLVE_MIN;
+		
+	}
+	else
+	{
+		result= RESOLVE_MAX;
+	}
+	return result;
+}
+
+//限速滤波函数
+
+
+int LimitRange_Filter(int measure)		
+{
+	static int Xk0=Min_Value;
+	static int Xk1=0;
+	int temp=0;
+	int LimitRange_value=RESOLVE_MAX;
+	if(measure>MAX_Value)			//è?1?D??μ′óóú×?′ó?μ￡??±?ó?a?ú 
+	{
+		return Xk0;
+	} 
+	Xk1=measure;
+	temp=absolute(Xk0,Xk1);			//è??????μ 
+	LimitRange_value=change_range_value(Xk1);
+	if(temp<LimitRange_value)
+	{
+		Xk0=Xk1;
+		return Xk1;
+	}
+	else
+	{
+		return Xk0;
+	}
+} 
+
+
+
+
+
+//直接修改程序
+
+
+//×a?ùμ?oê?¨ò?
+#define Max_Value 		3000			//×a?ù×?′ó?μ
+#define Min_Value 		850				//×a?ù×?D??μ
+
+
+
+//±??T?ùoê?¨ò?  0-3000 ?a?a?a?a 800-300
+#define SOURCE_MAX 3000
+#define SOURCE_MIN 0
+
+#define RESOLVE_MAX  800 
+#define RESOLVE_MIN  300
+
+//?aê??T?ù??2¨·??§
+#define Start_Limit_Max 1300
+#define Start_Limit_Min 1100
+
+
+//?ó?????μ 
+
+float absolute(float value1,float value2)
+{
+	if(value1>value2)
+	{
+		return (value1-value2);
+	}
+	else
+	{
+		return (value2-value1);
+	}
+
+}
+
+
+
+
+float change_range_value(float rec)
+{
+	float result=0;
+	if(rec<SOURCE_MAX && rec>SOURCE_MIN)
+	{
+		result=RESOLVE_MAX-(rec-SOURCE_MIN)*(RESOLVE_MAX-RESOLVE_MIN)/(SOURCE_MAX-SOURCE_MIN);
+	}
+	else if(rec>=SOURCE_MAX  )
+	{
+		result=RESOLVE_MIN;
+		
+	}
+	else
+	{
+		result= RESOLVE_MAX;
+	}
+	return result;
+}
+
+
+int LimitRange_Filter(int measure)		
+{
+	static int Xk0=Start_Limit_Min;
+	static int Xk1=0;
+	static int LimitRange_value=RESOLVE_MAX;
+	int temp=0;
+	
+	if(measure>Max_Value)			//è?1?D??μ′óóú×?′ó?μ￡??±?ó?a?ú 
+	{
+		return Xk0;
+	} 
+	Xk1=measure;
+	temp=absolute(Xk0,Xk1);			//è??????μ 
+	LimitRange_value=change_range_value(Xk1);
+	if(temp<LimitRange_value)
+	{
+		Xk0=Xk1;
+		return Xk1;
+	}
+	else
+	{
+		return Xk0;
+	}
+} 
+
+
+
+
+int filter(kalman1_state *state,int rec_value)
+{
+	  static u8 Start_Limit_Flg=0;
+	
+	  int temp_value=0;
+	  if(rec_value<Start_Limit_Max && rec_value>Start_Limit_Min)  
+	  {
+		  Start_Limit_Flg=1;				//μ±×a?ù?ú?a??·??§?ú?aê??T?ù??2¨
+	  }
+	  if(Start_Limit_Flg==1)
+	  {
+		temp_value=LimitRange_Filter(rec_value);
+	  }
+	  else
+	  {
+		  temp_value=rec_value;
+	  }
+//	  temp_value=rec_value;
+	  temp_value=kalman1_filter(state,temp_value);
+	  return temp_value;
+}
+
+
+
+

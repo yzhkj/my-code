@@ -1,0 +1,17 @@
+.\objects\system_stm32f0xx_1.o: RTE\Device\STM32F042G6Ux\system_stm32f0xx.c
+.\objects\system_stm32f0xx_1.o: ..\Libraries\CMSIS\include\stm32f0xx.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\CMSIS\include\core_cm0.h
+.\objects\system_stm32f0xx_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\CMSIS\include\core_cmInstr.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\CMSIS\include\core_cmFunc.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\CMSIS\include\system_stm32f0xx.h
+.\objects\system_stm32f0xx_1.o: ..\User\inc\stm32f0xx_conf.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_adc.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\CMSIS\include\stm32f0xx.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_can.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_dma.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_gpio.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_rcc.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_spi.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_usart.h
+.\objects\system_stm32f0xx_1.o: ..\Libraries\FWLib\inc\stm32f0xx_misc.h

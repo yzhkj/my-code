@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2504020283</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\12864lcd.c</file>
+      <file>$PROJ_DIR$\Debug\Exe\RB.txt</file>
+      <file>$PROJ_DIR$\Debug\Obj\12864lcd.pbi</file>
+      <file>$PROJ_DIR$\AD.H</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$TOOLKIT_DIR$\config\lnk430F149.xcl</file>
+      <file>$TOOLKIT_DIR$\inc\msp430x14x.h</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dl430fn.r43</file>
+      <file>$PROJ_DIR$\delay.h</file>
+      <file>$TOOLKIT_DIR$\inc\msp430.h</file>
+      <file>$TOOLKIT_DIR$\inc\in430.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\12864lcd.r43</file>
+      <file>$PROJ_DIR$\AD.c</file>
+      <file>$PROJ_DIR$\init.h</file>
+      <file>$PROJ_DIR$\12864.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\RB.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\msp430f149.h</file>
+      <file>$PROJ_DIR$\init.c</file>
+      <file>$TOOLKIT_DIR$\config\multiplier.xcl</file>
+      <file>$PROJ_DIR$\12864.c</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\12864lcd.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6 10 4 13 17 14 8 12 3 16</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 6 10 4 13 17 14 8 12 3 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\RB.txt</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5 18 11 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\RB.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 2</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+
